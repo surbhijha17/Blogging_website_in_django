@@ -13,10 +13,12 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.urls import reverse
+from articles.models import Category
 from django.contrib.auth import get_user_model
 User = get_user_model()
 # Create your views here.
 def signup_view(request):
+    categories=Category.objects.all()
     if request.method =='POST':
         form=UserSignUpForm(request.POST)
         if form.is_valid():
@@ -28,10 +30,11 @@ def signup_view(request):
             return redirect('home')
     else:
         form=UserSignUpForm()
-    return render(request,'accounts/signup.html',{'form':form,})
+    return render(request,'accounts/signup.html',{'categories':categories,'form':form,})
 
 
 def login_view(request):
+    categories=Category.objects.all()
     if request.method =='POST':
         form=AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -43,7 +46,7 @@ def login_view(request):
                 return redirect('home')
     else:
         form= AuthenticationForm()
-    return render(request,'accounts/login.html',{'form':form})
+    return render(request,'accounts/login.html',{'categories':categories,form':form})
 
 #def login_view(request):
     if request.method =='POST':
