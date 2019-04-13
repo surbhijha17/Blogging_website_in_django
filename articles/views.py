@@ -108,6 +108,7 @@ def like_post(request):
 
 @login_required(login_url="/accounts/login")
 def article_create(request):
+    categories=Category.objects.all()
     if request.method=='POST':
         form = forms.CreateArticle(request.POST,request.FILES)
         if form.is_valid():
@@ -117,7 +118,7 @@ def article_create(request):
             return redirect('articles:list')
     else:
         form =forms.CreateArticle()
-    return render(request,'articles/article_create.html',{'form':form})
+    return render(request,'articles/article_create.html',{'categories':categories,'form':form})
 
 
 def show_category(request,slug):
